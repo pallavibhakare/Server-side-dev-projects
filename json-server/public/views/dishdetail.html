@@ -1,0 +1,117 @@
+
+    <div class="container">
+        <div class="row row-content" ng-controller="DishDetailController">			
+            <div class="col-xs-12" ng-if="!showDish">
+                <h3>{{message}}</h3>
+            </div>
+            <div class="col-xs-12" ng-if="showDish">
+                <button class="btn btn-xs btn-primary pull-right"
+                    type="button" ui-sref="app.menu">
+                    Back to Menu
+                </button>
+                <div class="media">
+				  <div class="media-left">
+					<a href="#" class="pull-left">
+					  <img class="media-object img-thumbnail"
+                         ng-src={{dish.image}} alt="Uthappizza">
+                        </a>
+					</a>
+				  </div>
+				  <div class="media-body">
+                        <h2 class="media-heading">{{dish.name}}
+                         <span class="label label-danger">{{dish.label}}</span>
+                         <span class="badge">{{dish.price | currency}}</span></h2>
+                        <p>{{dish.description}}</p>
+                        
+                    </div>
+				</div>
+            </div>
+            <div class="col-xs-9 col-xs-offset-1" >	
+				<div class="media" >				 
+				  <div class="media-body">
+					<h4 class="media-heading">Customer comments	 
+						<small>	Sort by: </small>
+						<input type="text" ng-model="searchText" >
+												
+					</h4>				
+					<!-- Nested media object -->
+					<div class="media" >
+						<blockquote ng-repeat="cmnt in dish.comments | orderBy:searchText: false "  >
+							<p>{{cmnt.rating}} Stars</p>
+							<p>{{cmnt.comment}}</p>
+							<footer>{{cmnt.author}} <cite title="Source Title">{{cmnt.date | date:'medium'}}</cite></footer>
+						</blockquote>							                		
+					</div>
+				  </div>
+				</div>							               
+            </div>
+            <div class="col-xs-9 col-xs-offset-1" ng-controller="DishCommentController">
+                    <ul class="list-unstyled">
+						<blockquote ng-show="dish.comments.Name">
+                        <p>{{dish.comments.rating}} Stars</p>
+                        <p>{{dish.comments.comment}}</p>
+                        <footer>{{dish.comments.Name}} , <cite title="Date">{{ dish.comments.date | date : 'medium'}}</cite></footer>
+                    </blockquote>
+                    </ul>
+                <form class="form-horizontal" name="commentForm"
+                		ng-submit="submitComment()" novalidate>
+						<div class="form-group" ng-class="{ 'has-error' : commentForm.Name.$error.required && !commentForm.Name.$pristine }">
+                        <label for="Name" class="col-sm-2 control-label">Your Name</label>
+                        <div class="col-sm-10">
+                        <input type="text" class="form-control" id="Name" name="Name" placeholder="Enter Your Name"
+                        ng-model="dish.comments.Name" required>
+                        <span ng-show="commentForm.Name.$error.required && !commentForm.Name.$pristine" class="help-block">Your Name is required.</span>
+                        
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="form-group">
+                        <label for="guest" class="col-sm-2 control-label">Number of Guest</label>
+                        
+                        
+                       <div class="radio col-xs-12 col-sm-6">
+                            <label class="radio-inline">
+                                <input type="radio" name="dish.comments.rating" value="1" id="first" ng-model="dish.comments.rating">
+                                <strong>1 </strong>
+                            </label>
+                               <label class="radio-inline">
+                                <input type="radio" name="dish.comments.rating" value="2" id="second" ng-model="dish.comments.rating">
+                                <strong>2 </strong>
+                            </label>
+                               <label class="radio-inline">
+                                <input type="radio" name="dish.comments.rating" value="3" id="third" ng-model="dish.comments.rating">
+                                <strong>3 </strong>
+                            </label>
+                               <label class="radio-inline">
+                                <input type="radio" name="dish.comments.rating" value="4" id="fourth" ng-model="dish.comments.rating">
+                                <strong>4 </strong>
+                            </label>
+                               <label class="radio-inline">
+                                <input type="radio" value="5" id="fift" name="dish.comments.rating"
+                                ng-model="dish.comments.rating">
+                                <strong>5 </strong>
+                            </label>
+                    </div>
+                    </div>
+                                 
+                    <div class="form-group" ng-class="{ 'has-error' : commentForm.comment.$error.required && !commentForm.comment.$pristine }">
+                        <label for="feedback" class="col-sm-2 control-label">Your Feedback</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" id="comment" name="comment" rows="12" ng-model="dish.comments.comment" required></textarea>
+
+                                                        
+                            <span ng-show="commentForm.comment.$error.required && !commentForm.comment.$pristine" class="help-block">Your Comment is required.</span>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" class="btn btn-primary" ng-disabled="commentForm.$invalid">Send Feedback</button>
+                        </div>
+                    </div>
+					
+                </form>
+            </div>
+        </div>
+    </div>
